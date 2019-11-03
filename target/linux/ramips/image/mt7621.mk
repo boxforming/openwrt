@@ -157,6 +157,29 @@ define Device/asus_rt-ac85p
 endef
 TARGET_DEVICES += asus_rt-ac85p
 
+define Device/beeline_smartbox-turbo-plus
+  MTK_SOC := mt7621
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  KERNEL_SIZE := 4096k
+  IMAGE_SIZE := 40960k
+  UBINIZE_OPTS := -E 5
+  SERCOMM_HWID := CHJ
+  SERCOMM_HWVER := A001
+  SERCOMM_SWVER := 0x0052
+  IMAGES += factory.img kernel.bin rootfs.bin
+  IMAGE/factory.img := pad-extra 2048k | append-kernel | pad-to 6144k | append-ubi | \
+	pad-to $$$$(BLOCKSIZE) | sercom-footer | pad-to 128 | zip $$$$(DEVICE_MODEL).bin | sercom-seal
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+  IMAGE/kernel.bin := append-kernel
+  IMAGE/rootfs.bin := append-ubi | check-size $$$$(IMAGE_SIZE)
+  DEVICE_VENDOR := Beeline
+  DEVICE_MODEL := SmartBox Turbo Plus
+  DEVICE_PACKAGES := \
+	kmod-mt7603 kmod-mt7615e kmod-usb3 kmod-usb-ledtrig-usbport wpad-basic
+endef
+TARGET_DEVICES += beeline_smartbox-turbo-plus
+
 define Device/buffalo_wsr-1166dhp
   MTK_SOC := mt7621
   IMAGE/sysupgrade.bin := trx | pad-rootfs | append-metadata

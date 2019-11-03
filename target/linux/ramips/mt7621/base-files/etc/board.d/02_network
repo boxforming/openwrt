@@ -129,6 +129,10 @@ ramips_setup_interfaces()
 		ucidef_add_switch "switch0" \
 			"1:lan:3" "2:lan:2" "3:lan:1" "4:wan" "6@eth0"
 		;;
+	beeline,smartbox-turbo-plus)
+		ucidef_add_switch "switch0" \
+			"0:wan" "1:lan:1" "2:lan:2" "3:lan:3" "4:lan:4" "6@eth0"
+		;;
 	*)
 		ucidef_set_interfaces_lan_wan "eth0.1" "eth0.2"
 		;;
@@ -219,6 +223,8 @@ ramips_setup_macs()
 		wan_mac=$(macaddr_add "$(cat /sys/class/net/eth0/address)" 1)
 		label_mac=$(cat /sys/class/ieee80211/phy0/macaddress)
 		;;
+	beeline,smartbox-turbo-plus)
+		lan_mac=$(mtd_get_mac_binary factory 0x21000)
 	*)
 		wan_mac=$(macaddr_add "$(cat /sys/class/net/eth0/address)" 1)
 		;;
