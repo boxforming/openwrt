@@ -225,6 +225,7 @@ ramips_setup_macs()
 		;;
 	beeline,smartbox-turbo-plus)
 		lan_mac=$(mtd_get_mac_binary factory 0x21000)
+		;;
 	*)
 		wan_mac=$(macaddr_add "$(cat /sys/class/net/eth0/address)" 1)
 		;;
